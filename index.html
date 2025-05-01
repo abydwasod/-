@@ -525,6 +525,141 @@
             color: #c82333;
             transform: scale(1.1);
         }
+        /* إضافة تنسيقات الألوان */
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+            justify-content: center;
+        }
+
+        .color-circle {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .color-circle:hover {
+            transform: scale(1.2);
+        }
+
+        .color-circle::after {
+            content: attr(data-color);
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.2s;
+        }
+
+        .color-circle:hover::after {
+            opacity: 1;
+            visibility: visible;
+            bottom: 120%;
+        }
+
+        .color-black {
+            background: #000;
+            border: 1px solid #ddd;
+        }
+
+        .color-white {
+            background: #fff;
+            border: 1px solid #ddd;
+        }
+
+        /* إضافة تنسيقات السلايدر */
+        .product-slider {
+            position: relative;
+            overflow: hidden;
+            border-radius: 18px 18px 0 0;
+            height: 250px;
+        }
+
+        .product-slider .slides {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+            width: 100%;
+        }
+
+        .product-slider .slide {
+            min-width: 100%;
+            width: 100%;
+            height: 100%;
+            flex-shrink: 0;
+        }
+
+        .product-slider .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .product-slider .slider-nav {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 2;
+        }
+
+        .product-slider .slider-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .product-slider .slider-dot.active {
+            background: #fff;
+            transform: scale(1.2);
+        }
+
+        .product-slider .slider-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .product-slider .slider-arrow:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .product-slider .slider-prev {
+            left: 10px;
+        }
+
+        .product-slider .slider-next {
+            right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -609,27 +744,79 @@
         <!-- قسم الشبابي -->
         <div class="tab-pane fade show active" id="men" role="tabpanel" aria-labelledby="men-tab">
             <div class="row g-4">
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="1"><img src="1.png" class="product-img" alt="منتج 1"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">320</span><button class="btn btn-primary buy-btn" onclick="addToCart('1')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="2"><img src="2.png" class="product-img" alt="منتج 2"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">400</span><button class="btn btn-primary buy-btn" onclick="addToCart('2')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="3"><img src="3.png" class="product-img" alt="منتج 3"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">280</span><button class="btn btn-primary buy-btn" onclick="addToCart('3')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="4"><img src="4.png" class="product-img" alt="منتج 4"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">390</span><button class="btn btn-primary buy-btn" onclick="addToCart('4')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="5"><img src="5.png" class="product-img" alt="منتج 5"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">650</span><button class="btn btn-primary buy-btn" onclick="addToCart('5')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="6"><img src="6.png" class="product-img" alt="منتج 6"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('6')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="7"><img src="7.png" class="product-img" alt="منتج 7"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">200</span><button class="btn btn-primary buy-btn" onclick="addToCart('7')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="8"><img src="8.png" class="product-img" alt="منتج 8"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">500</span><button class="btn btn-primary buy-btn" onclick="addToCart('8')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="1"><img src="1.png" class="product-img" alt="منتج 1"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('1')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="2"><img src="2.png" class="product-img" alt="منتج 2"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('2')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="3"><img src="3.png" class="product-img" alt="منتج 3"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('3')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="4"><img src="4.png" class="product-img" alt="منتج 4"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('4')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="5"><img src="5.png" class="product-img" alt="منتج 5"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('5')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="6"><img src="6.png" class="product-img" alt="منتج 6"><div class="card-body"><div class="product-title mb-2">تيشرت قطن مطبوع</div><div class="mb-2 text-muted">قطن 100% - من L-XXL</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('6')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3">
+  <div class="card product-card h-100" data-product-id="7">
+    <div class="product-slider">
+      <div class="slides">
+        <div class="slide"><img src="7.png" alt="بنطلون ميلتون وايت ليج - صورة 1"></div>
+        <div class="slide"><img src="9.png" alt="بنطلون ميلتون وايت ليج - صورة 2"></div>
+      </div>
+      <div class="slider-arrow slider-prev"><i class="bi bi-chevron-right"></i></div>
+      <div class="slider-arrow slider-next"><i class="bi bi-chevron-left"></i></div>
+      <div class="slider-nav"></div>
+    </div>
+    <div class="card-body">
+      <div class="product-title mb-2">بنطلون ميلتون وايت ليج</div>
+      <div class="mb-2 text-muted">قطن 100% - من L-XXL</div>
+      <div class="color-options">
+        <div class="color-circle color-black active" data-color="أسود"></div>
+        <div class="color-circle color-white" data-color="أبيض"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="product-price">300</span>
+        <button class="btn btn-primary buy-btn" onclick="addToCart('7')">
+          <i class="bi bi-cart-plus"></i> أضف للسلة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="card product-card h-100" data-product-id="8">
+    <div class="product-slider">
+      <div class="slides">
+        <div class="slide"><img src="8.png" alt="بنطلون ميلتون ساده - صورة 1"></div>
+        <div class="slide"><img src="10.png" alt="بنطلون ميلتون ساده - صورة 2"></div>
+      </div>
+      <div class="slider-arrow slider-prev"><i class="bi bi-chevron-right"></i></div>
+      <div class="slider-arrow slider-next"><i class="bi bi-chevron-left"></i></div>
+      <div class="slider-nav"></div>
+    </div>
+    <div class="card-body">
+      <div class="product-title mb-2">بنطلون ميلتون ساده</div>
+      <div class="mb-2 text-muted">قطن 100% - من L-XXL</div>
+      <div class="color-options">
+        <div class="color-circle color-black active" data-color="أسود"></div>
+        <div class="color-circle color-white" data-color="أبيض"></div>
+      </div>
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="product-price">300</span>
+        <button class="btn btn-primary buy-btn" onclick="addToCart('8')">
+          <i class="bi bi-cart-plus"></i> أضف للسلة
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
             </div>
         </div>
         <!-- قسم البناتي -->
         <div class="tab-pane fade" id="women" role="tabpanel" aria-labelledby="women-tab">
             <div class="row g-4">
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="9"><img src="9.png" class="product-img" alt="منتج 1"><div class="card-body"><div class="product-title mb-2">فستان صيفي</div><div class="mb-2 text-muted">قماش حرير خفيف</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">420</span><button class="btn btn-primary buy-btn" onclick="addToCart('9')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="10"><img src="10.png" class="product-img" alt="منتج 2"><div class="card-body"><div class="product-title mb-2">بلوزة دانتيل</div><div class="mb-2 text-muted">ألوان متعددة</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">250</span><button class="btn btn-primary buy-btn" onclick="addToCart('10')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="11"><img src="11.png" class="product-img" alt="منتج 3"><div class="card-body"><div class="product-title mb-2">بنطلون قماش</div><div class="mb-2 text-muted">مقاسات متعددة</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">300</span><button class="btn btn-primary buy-btn" onclick="addToCart('11')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="12"><img src="12.png" class="product-img" alt="منتج 4"><div class="card-body"><div class="product-title mb-2">كارديجان طويل</div><div class="mb-2 text-muted">ألوان متنوعة</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('12')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="13"><img src="13.png" class="product-img" alt="منتج 5"><div class="card-body"><div class="product-title mb-2">حقيبة يد</div><div class="mb-2 text-muted">جلد صناعي</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">270</span><button class="btn btn-primary buy-btn" onclick="addToCart('13')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="14"><img src="14.png" class="product-img" alt="منتج 6"><div class="card-body"><div class="product-title mb-2">حذاء بناتي</div><div class="mb-2 text-muted">مقاسات من 36 إلى 41</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">320</span><button class="btn btn-primary buy-btn" onclick="addToCart('14')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="15"><img src="15.png" class="product-img" alt="منتج 7"><div class="card-body"><div class="product-title mb-2">إيشارب حرير</div><div class="mb-2 text-muted">ألوان ورسومات متنوعة</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">120</span><button class="btn btn-primary buy-btn" onclick="addToCart('15')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
-                <div class="col-md-3"><div class="card product-card h-100" data-product-id="16"><img src="16.png" class="product-img" alt="منتج 8"><div class="card-body"><div class="product-title mb-2">تيشرت بناتي</div><div class="mb-2 text-muted">قطن 100%</div><div class="d-flex justify-content-between align-items-center"><span class="product-price">180</span><button class="btn btn-primary buy-btn" onclick="addToCart('16')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="9"><img src="18png" class="product-img" alt="منتج 1"><div class="card-body"><div class="product-title mb-2">فستان صيفي</div><div class="mb-2 text-muted">قماش حرير خفيف</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('9')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="10"><img src="17.png" class="product-img" alt="منتج 2"><div class="card-body"><div class="product-title mb-2">بلوزة دانتيل</div><div class="mb-2 text-muted">ألوان متعددة</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('10')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="11"><img src="11.png" class="product-img" alt="منتج 3"><div class="card-body"><div class="product-title mb-2">بنطلون قماش</div><div class="mb-2 text-muted">مقاسات متعددة</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('11')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="12"><img src="12.png" class="product-img" alt="منتج 4"><div class="card-body"><div class="product-title mb-2">كارديجان طويل</div><div class="mb-2 text-muted">ألوان متنوعة</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('12')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="13"><img src="13.png" class="product-img" alt="منتج 5"><div class="card-body"><div class="product-title mb-2">حقيبة يد</div><div class="mb-2 text-muted">جلد صناعي</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('13')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="14"><img src="14.png" class="product-img" alt="منتج 6"><div class="card-body"><div class="product-title mb-2">حذاء بناتي</div><div class="mb-2 text-muted">مقاسات من 36 إلى 41</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('14')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="15"><img src="15.png" class="product-img" alt="منتج 7"><div class="card-body"><div class="product-title mb-2">إيشارب حرير</div><div class="mb-2 text-muted">ألوان ورسومات متنوعة</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('15')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
+                <div class="col-md-3"><div class="card product-card h-100" data-product-id="16"><img src="16.png" class="product-img" alt="منتج 8"><div class="card-body"><div class="product-title mb-2">تيشرت بناتي</div><div class="mb-2 text-muted">قطن 100%</div><div class="color-options"><div class="color-circle color-black" data-color="أسود"></div><div class="color-circle color-white" data-color="أبيض"></div></div><div class="d-flex justify-content-between align-items-center"><span class="product-price">350</span><button class="btn btn-primary buy-btn" onclick="addToCart('16')"><i class="bi bi-cart-plus"></i> أضف للسلة</button></div></div></div></div>
             </div>
         </div>
 </div>
@@ -759,19 +946,20 @@
 <script>
     // إعدادات Firebase
     const firebaseConfig = {
-    apiKey: "AIzaSyCSdIbH7AIUknrBhOkB2zjCRuwAUsUL4o8",
-    authDomain: "brand-7d188.firebaseapp.com",
-    databaseURL: "https://brand-7d188-default-rtdb.firebaseio.com",
-    projectId: "brand-7d188",
-    storageBucket: "brand-7d188.firebasestorage.app",
-    messagingSenderId: "984271643354",
-    appId: "1:984271643354:web:e5d7ac7018c0d015d4fbe3",
-    measurementId: "G-N0VFC9B4XZ"
-  };
+        apiKey: "AIzaSyCSdIbH7AIUknrBhOkB2zjCRuwAUsUL4o8",
+        authDomain: "brand-7d188.firebaseapp.com",
+        databaseURL: "https://brand-7d188-default-rtdb.firebaseio.com",
+        projectId: "brand-7d188",
+        storageBucket: "brand-7d188.firebasestorage.app",
+        messagingSenderId: "984271643354",
+        appId: "1:984271643354:web:e5d7ac7018c0d015d4fbe3",
+        measurementId: "G-N0VFC9B4XZ"
+    };
 
     // تهيئة Firebase
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+    const cartRef = db.ref('cart');
 
     // إدارة التعليقات
     const commentsRef = db.ref('comments');
@@ -903,15 +1091,31 @@
 
     // إضافة منتج للسلة
     function addToCart(productId) {
-        const card = document.querySelector(`[data-product-id="${productId}"]`);
-        if (!card) return;
+        var productCard = document.querySelector('[data-product-id="' + productId + '"]');
+        if (!productCard) return;
+        var productName = productCard.querySelector('.product-title').innerText;
+        var productPrice = parseFloat(productCard.querySelector('.product-price').innerText);
+        var productColor = "افتراضي";
+        var colorCircle = productCard.querySelector('.color-circle.active');
+        if (colorCircle) productColor = colorCircle.getAttribute('data-color');
 
-        const product = {
+        // جلب صورة المنتج بشكل ديناميكي
+        var productImg = productCard.querySelector('.product-img');
+        if (!productImg) {
+            // إذا لم توجد صورة مباشرة، ابحث عن الصورة المعروضة في السلايدر
+            const activeSlide = productCard.querySelector('.slide[style*="block"] img') || 
+                      productCard.querySelector('.slide:first-child img');
+            productImg = activeSlide;
+        }
+        var productImgSrc = productImg ? productImg.getAttribute('src') : '';
+
+        var product = {
             id: productId,
-            name: card.querySelector('.product-title').textContent,
-            price: parseFloat(card.querySelector('.product-price').textContent),
-            image: card.querySelector('.product-img').src,
-            quantity: 1
+            name: productName,
+            price: productPrice,
+            image: productImgSrc,
+            quantity: 1,
+            color: productColor
         };
 
         if (cart[productId]) {
@@ -1055,50 +1259,30 @@
 
     // إغلاق السلة عند النقر خارجها
     document.addEventListener('click', function(e) {
-        if (isCartOpen && !cartDropdown.contains(e.target) && !cartButton.contains(e.target)) {
-            closeCart();
+        const cartDropdown = document.getElementById('cartDropdown');
+        const cartButton = document.getElementById('cartButton');
+        // إذا كان الضغط داخل السلة أو زر السلة أو السلايدر، لا تغلق السلة
+        if (
+            cartDropdown.contains(e.target) ||
+            cartButton.contains(e.target) ||
+            e.target.closest('.product-slider')
+        ) {
+            return;
         }
+        cartDropdown.classList.remove('show');
     });
 
     // معالجة إتمام الشراء
-    document.getElementById('checkoutBtn').addEventListener('click', function() {
-        window.location.href = 'order.html';
-    });
-
-    // معالجة تقديم الطلب
-    document.getElementById('orderForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // التحقق من صحة البيانات
-        const customerName = document.getElementById('customerName').value.trim();
-        const customerPhone = document.getElementById('customerPhone').value.trim();
-        const customerAddress = document.getElementById('customerAddress').value.trim();
-        
-        if (!customerName || !customerPhone || !customerAddress) {
-            alert('يرجى ملء جميع الحقول المطلوبة');
-            return;
+    document.getElementById('checkoutBtn').addEventListener('click', async function() {
+        try {
+            // حفظ السلة في Firebase قبل الانتقال
+            await cartRef.set(cart);
+            // الانتقال إلى صفحة إتمام الطلب
+            window.location.href = 'order.html';
+        } catch (error) {
+            console.error('خطأ في حفظ السلة:', error);
+            alert('حدث خطأ أثناء حفظ السلة. يرجى المحاولة مرة أخرى.');
         }
-
-        const order = {
-            items: cart,
-            totalPrice: Object.values(cart).reduce((sum, item) => sum + (item.price * item.quantity), 0),
-            customerName: customerName,
-            customerPhone: customerPhone,
-            customerAddress: customerAddress,
-            customerNote: document.getElementById('customerNote').value.trim(),
-            orderDate: new Date().toISOString()
-        };
-
-        // هنا يمكنك إضافة كود إرسال الطلب إلى الخادم
-        console.log('Order details:', order);
-        
-        // إظهار رسالة نجاح
-        alert('تم إرسال طلبك بنجاح!');
-        clearCart();
-        
-        // إغلاق النافذة المنبثقة
-        const orderModal = bootstrap.Modal.getInstance(document.getElementById('orderModal'));
-        orderModal.hide();
     });
 
     // إضافة تأثير التلاشي للمنتجات
@@ -1120,6 +1304,48 @@
     // تشغيل تأثير التلاشي عند التمرير
     window.addEventListener('scroll', checkVisibility);
     window.addEventListener('load', checkVisibility);
+
+    // سلايدر احترافي للمنتجات
+    document.querySelectorAll('.product-slider').forEach(slider => {
+        const slides = slider.querySelectorAll('.slide');
+        const prev = slider.querySelector('.slider-prev');
+        const next = slider.querySelector('.slider-next');
+        const nav = slider.querySelector('.slider-nav');
+        let current = 0;
+        let interval;
+
+        // إنشاء النقاط الديناميكية
+        nav.innerHTML = [...slides].map((_,i) => 
+            `<div class="slider-dot ${i===0?'active':''}" data-index="${i}"></div>`
+        ).join('');
+
+        const dots = nav.querySelectorAll('.slider-dot');
+        
+        function updateSlider() {
+            slides.forEach((s,i) => s.style.display = i === current ? 'block' : 'none');
+            dots.forEach(d => d.classList.remove('active'));
+            dots[current].classList.add('active');
+        }
+
+        prev.addEventListener('click', () => {
+            current = (current - 1 + slides.length) % slides.length;
+            updateSlider();
+        });
+
+        next.addEventListener('click', () => {
+            current = (current + 1) % slides.length;
+            updateSlider();
+        });
+
+        // تفعيل الانتقال التلقائي
+        function startAutoSlide() {
+            interval = setInterval(() => next.click(), 5000);
+        }
+        startAutoSlide();
+        
+        slider.addEventListener('mouseenter', () => clearInterval(interval));
+        slider.addEventListener('mouseleave', startAutoSlide);
+    });
 </script>
 </body>
 </html>
