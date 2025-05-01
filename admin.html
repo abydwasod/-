@@ -540,9 +540,9 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
+            <!-- جديد -->
+           
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -582,7 +582,6 @@
                 let totalRevenue = 0;
                 let customers = new Set();
 
-                // تحويل البيانات إلى مصفوفة وترتيبها حسب التاريخ
                 const orders = [];
                 snapshot.forEach((childSnapshot) => {
                     const order = childSnapshot.val();
@@ -597,7 +596,6 @@
                     return;
                 }
 
-                // ترتيب الطلبات من الأحدث إلى الأقدم
                 orders.sort((a, b) => {
                     const dateA = new Date(a.orderDate || 0);
                     const dateB = new Date(b.orderDate || 0);
@@ -607,12 +605,29 @@
                 orders.forEach(order => {
                     try {
                         totalOrders++;
-                        totalRevenue += parseFloat(order.totalAmount) || 0;
+                        
+                        // حساب المجموع الكلي من المنتجات
+                        let totalAmount = 0;
+                        if (order.items) {
+                            Object.values(order.items).forEach(item => {
+                                totalAmount += (item.price * item.quantity);
+                            });
+                        }
+
+                        // حساب الخصم إذا كان هناك كود خصم E10
+                        let discountAmount = 0;
+                        if (order.discountCode === 'E10') {
+                            discountAmount = totalAmount * 0.1; // خصم 10%
+                        }
+
+                        // حساب السعر النهائي
+                        const finalAmount = totalAmount - discountAmount;
+
+                        totalRevenue += finalAmount;
                         if (order.customerPhone) {
                             customers.add(order.customerPhone);
                         }
 
-                        // إضافة حالة افتراضية إذا لم تكن موجودة
                         if (!order.status) {
                             order.status = 'جديد';
                         }
@@ -640,45 +655,17 @@
                                             <div class="card-body">
                                                 <p class="mb-2"><strong>رقم الطلب:</strong> #${order.id}</p>
                                                 <p class="mb-2"><strong>حالة الطلب:</strong> ${order.status || 'جديد'}</p>
-                                                ${(() => {
-                                                    // حساب عدد التيشرتات
-                                                    let totalTshirts = 0;
-                                                    if (order.items) {
-                                                        Object.values(order.items).forEach(item => {
-                                                            console.log('Item:', item); // للتحقق من البيانات
-                                                            if (item && item.name && (
-                                                                item.name.includes('تيشيرت') || 
-                                                                item.name.includes('تشيرت') || 
-                                                                item.name.includes('تي شيرت') ||
-                                                                item.name.includes('قطن مطبوع')
-                                                            )) {
-                                                                totalTshirts += parseInt(item.quantity) || 0;
-                                                                console.log('Found tshirt:', item.name, 'Quantity:', item.quantity);
-                                                            }
-                                                        });
-                                                    }
-                                                    console.log('Total tshirts:', totalTshirts); // للتحقق من العدد النهائي
-
-                                                    // حساب السعر
-                                                    const pricePerTshirt = 320;
-                                                    const totalPrice = totalTshirts * pricePerTshirt;
-                                                    const discountAmount = order.discountCode ? (totalPrice * 0.1) : 0;
-                                                    const finalPrice = totalPrice - discountAmount;
-
-                                                    return `
-                                                        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
-                                                            <div style="font-size: 16px;">
-                                                                <p class="mb-2"><strong>عدد التيشرتات:</strong> ${totalTshirts} قطعة × ${pricePerTshirt} ج.م = ${totalPrice} ج.م</p>
-                                                                ${order.discountCode ? `
-                                                                    <p class="mb-2" style="color: #198754"><strong>الخصم:</strong> 10% = ${discountAmount} ج.م</p>
-                                                                ` : ''}
-                                                                <p class="mb-0" style="font-size: 18px; color: #0d6efd;">
-                                                                    <strong>السعر النهائي:</strong> ${finalPrice} ج.م
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                    `;
-                                                })()}
+                                                <div style="background-color: #f8f9fa; padding: 15px; border-radius: 8px; margin-top: 10px;">
+                                                    <div style="font-size: 16px;">
+                                                        <p class="mb-2"><strong>المجموع الكلي:</strong> ${totalAmount} ج.م</p>
+                                                        ${order.discountCode === 'E10' ? `
+                                                            <p class="mb-2" style="color: #198754"><strong>الخصم (10%):</strong> ${discountAmount} ج.م</p>
+                                                        ` : ''}
+                                                        <p class="mb-0" style="font-size: 18px; color: #0d6efd;">
+                                                            <strong>السعر النهائي:</strong> ${finalAmount} ج.م
+                                                        </p>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -694,9 +681,9 @@
                                                             <img src="${item.image}" class="product-img me-3" style="width: 100px; height: 100px; object-fit: cover; border-radius: 8px;">
                                                             <div>
                                                                 <h6 class="mb-1">${item.name}</h6>
-                                                                <p class="mb-1 text-muted">السعر: ${item.price.toLocaleString()} ج.م</p>
+                                                                <p class="mb-1 text-muted">السعر: ${item.price} ج.م</p>
                                                                 <p class="mb-1 text-muted">الكمية: ${item.quantity}</p>
-                                                                <p class="mb-0 text-muted">المجموع: ${(item.price * item.quantity).toLocaleString()} ج.م</p>
+                                                                <p class="mb-0 text-muted">المجموع: ${item.price * item.quantity} ج.م</p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -732,7 +719,6 @@
                     }
                 });
 
-                // تحديث الإحصائيات
                 document.getElementById('totalOrders').textContent = totalOrders;
                 document.getElementById('totalRevenue').textContent = totalRevenue.toLocaleString();
                 document.getElementById('totalCustomers').textContent = customers.size;
@@ -1245,6 +1231,174 @@
                 }
             });
         });
+
+        // دالة تحميل تفاصيل عمليات الدفع
+        function loadPaymentDetails() {
+            const paymentDetailsTable = document.getElementById('paymentDetailsTable');
+            
+            db.ref('orders').on('value', (snapshot) => {
+                paymentDetailsTable.innerHTML = '';
+                
+                if (!snapshot.exists()) {
+                    paymentDetailsTable.innerHTML = `
+                        <tr>
+                            <td colspan="11" class="text-center">لا توجد عمليات دفع</td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                snapshot.forEach((childSnapshot) => {
+                    const order = childSnapshot.val();
+                    const orderId = childSnapshot.key;
+                    
+                    // حساب المجموع الكلي
+                    const totalAmount = Object.values(order.items).reduce((sum, item) => 
+                        sum + (item.price * item.quantity), 0);
+                    
+                    // حساب قيمة الخصم
+                    const discountAmount = order.discountCode ? (totalAmount * 0.1) : 0;
+                    
+                    // حساب المجموع النهائي
+                    const finalAmount = totalAmount - discountAmount;
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>#${orderId}</td>
+                        <td>${order.customerName || 'غير محدد'}</td>
+                        <td>${order.customerPhone || 'غير محدد'}</td>
+                        <td>${order.customerAddress || 'غير محدد'}</td>
+                        <td>${totalAmount.toLocaleString()} ج.م</td>
+                        <td>${discountAmount.toLocaleString()} ج.م</td>
+                        <td>${finalAmount.toLocaleString()} ج.م</td>
+                        <td>${order.discountCode || 'لا يوجد'}</td>
+                        <td>${new Date(order.orderDate).toLocaleString('ar-EG')}</td>
+                        <td>
+                            <span class="badge ${getStatusBadgeClass(order.status)}">
+                                ${order.status || 'جديد'}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="showOrderDetails('${orderId}')">
+                                <i class="bi bi-eye"></i> تفاصيل
+                            </button>
+                        </td>
+                    `;
+                    paymentDetailsTable.appendChild(row);
+                });
+            });
+        }
+
+        // دالة لتحديد لون شارة الحالة
+        function getStatusBadgeClass(status) {
+            switch(status) {
+                case 'جديد':
+                    return 'bg-primary';
+                case 'قيد المعالجة':
+                    return 'bg-warning';
+                case 'مكتمل':
+                    return 'bg-success';
+                case 'ملغي':
+                    return 'bg-danger';
+                default:
+                    return 'bg-secondary';
+            }
+        }
+
+        // دالة عرض تفاصيل الطلب
+        function showOrderDetails(orderId) {
+            db.ref('orders').child(orderId).once('value', (snapshot) => {
+                const order = snapshot.val();
+                if (!order) return;
+
+                // إنشاء نافذة منبثقة لعرض التفاصيل
+                const modal = document.createElement('div');
+                modal.className = 'modal fade';
+                modal.id = 'orderDetailsModal';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">تفاصيل الطلب #${orderId}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h6>معلومات العميل</h6>
+                                        <p><strong>الاسم:</strong> ${order.customerName}</p>
+                                        <p><strong>رقم التليفون:</strong> ${order.customerPhone}</p>
+                                        <p><strong>العنوان:</strong> ${order.customerAddress}</p>
+                                        <p><strong>ملاحظات:</strong> ${order.customerNote || 'لا توجد ملاحظات'}</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <h6>تفاصيل الدفع</h6>
+                                        <p><strong>تاريخ الطلب:</strong> ${new Date(order.orderDate).toLocaleString('ar-EG')}</p>
+                                        <p><strong>حالة الطلب:</strong> ${order.status}</p>
+                                        <p><strong>كود الخصم:</strong> ${order.discountCode || 'لا يوجد'}</p>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <h6>المنتجات</h6>
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>المنتج</th>
+                                                    <th>السعر</th>
+                                                    <th>الكمية</th>
+                                                    <th>المجموع</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                ${Object.entries(order.items).map(([id, item]) => `
+                                                    <tr>
+                                                        <td>${item.name}</td>
+                                                        <td>${item.price.toLocaleString()} ج.م</td>
+                                                        <td>${item.quantity}</td>
+                                                        <td>${(item.price * item.quantity).toLocaleString()} ج.م</td>
+                                                    </tr>
+                                                `).join('')}
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <td colspan="3" class="text-end"><strong>المجموع الكلي:</strong></td>
+                                                    <td>${Object.values(order.items).reduce((sum, item) => 
+                                                        sum + (item.price * item.quantity), 0).toLocaleString()} ج.م</td>
+                                                </tr>
+                                                ${order.discountCode ? `
+                                                    <tr>
+                                                        <td colspan="3" class="text-end"><strong>الخصم (10%):</strong></td>
+                                                        <td>${(Object.values(order.items).reduce((sum, item) => 
+                                                            sum + (item.price * item.quantity), 0) * 0.1).toLocaleString()} ج.م</td>
+                                                    </tr>
+                                                ` : ''}
+                                                <tr>
+                                                    <td colspan="3" class="text-end"><strong>المجموع النهائي:</strong></td>
+                                                    <td>${order.totalAmount.toLocaleString()} ج.م</td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إغلاق</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(modal);
+                const modalInstance = new bootstrap.Modal(modal);
+                modalInstance.show();
+
+                // إزالة النافذة المنبثقة من DOM عند إغلاقها
+                modal.addEventListener('hidden.bs.modal', () => {
+                    modal.remove();
+                });
+            });
+        }
     </script>
 </body>
 </html> 
