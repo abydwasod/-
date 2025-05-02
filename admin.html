@@ -780,34 +780,31 @@
 
                 console.log('المنتجات الموجودة:', products);
 
-                // تجميع الكميات لكل منتج
-                const quantities = {};
+                // تحديث كل منتج في الطلب
                 Object.entries(items).forEach(([_, item]) => {
-                    console.log('تجميع الكمية للمنتج:', item.name, 'الكمية:', item.quantity);
-                    quantities[item.name] = (quantities[item.name] || 0) + parseInt(item.quantity);
-                });
-
-                console.log('الكميات المجمعة:', quantities);
-
-                // تحديث المخزون لكل منتج
-                Object.entries(quantities).forEach(([productName, totalQuantity]) => {
-                    console.log('جاري تحديث مخزون:', productName, 'الكمية المطلوبة:', totalQuantity);
+                    console.log('معالجة المنتج:', item);
                     
                     // البحث عن المنتج في المخزون
                     Object.entries(products).forEach(([productId, product]) => {
-                        if (product.name === productName) {
-                            console.log('وجدت المنتج في المخزون:', product);
-                            const newQuantity = parseInt(product.quantity) - totalQuantity;
-                            console.log('الكمية الحالية:', product.quantity, 'الكمية الجديدة:', newQuantity);
+                        console.log('مقارنة:', item.name, 'مع', product.name);
+                        
+                        if (item.name === product.name) {
+                            console.log('وجدت تطابق!');
+                            console.log('الكمية الحالية:', product.quantity);
+                            console.log('الكمية المطلوبة:', item.quantity);
+                            
+                            const newQuantity = parseInt(product.quantity) - parseInt(item.quantity);
+                            console.log('الكمية الجديدة:', newQuantity);
 
                             if (newQuantity >= 0) {
+                                console.log('جاري تحديث المخزون...');
                                 db.ref('products').child(productId).update({
                                     quantity: newQuantity,
                                     updatedAt: new Date().toISOString()
                                 })
                                 .then(() => {
                                     console.log('تم تحديث المخزون بنجاح');
-                                    showToast(`تم خصم ${totalQuantity} قطعة من ${product.name} - الكمية المتبقية: ${newQuantity}`);
+                                    showToast(`تم خصم ${item.quantity} قطعة من ${product.name} - الكمية المتبقية: ${newQuantity}`);
                                 })
                                 .catch(error => {
                                     console.error('خطأ في تحديث المخزون:', error);
@@ -815,7 +812,7 @@
                                 });
                             } else {
                                 console.log('لا يوجد كمية كافية');
-                                showToast(`لا يوجد كمية كافية من ${product.name} - المطلوب: ${totalQuantity} - المتوفر: ${product.quantity}`, 'error');
+                                showToast(`لا يوجد كمية كافية من ${product.name} - المطلوب: ${item.quantity} - المتوفر: ${product.quantity}`, 'error');
                             }
                         }
                     });
@@ -837,33 +834,30 @@
 
                 console.log('المنتجات الموجودة:', products);
 
-                // تجميع الكميات لكل منتج
-                const quantities = {};
+                // تحديث كل منتج في الطلب
                 Object.entries(items).forEach(([_, item]) => {
-                    console.log('تجميع الكمية للمنتج:', item.name, 'الكمية:', item.quantity);
-                    quantities[item.name] = (quantities[item.name] || 0) + parseInt(item.quantity);
-                });
-
-                console.log('الكميات المجمعة:', quantities);
-
-                // تحديث المخزون لكل منتج
-                Object.entries(quantities).forEach(([productName, totalQuantity]) => {
-                    console.log('جاري إعادة مخزون:', productName, 'الكمية المطلوبة:', totalQuantity);
+                    console.log('معالجة المنتج:', item);
                     
                     // البحث عن المنتج في المخزون
                     Object.entries(products).forEach(([productId, product]) => {
-                        if (product.name === productName) {
-                            console.log('وجدت المنتج في المخزون:', product);
-                            const newQuantity = parseInt(product.quantity) + totalQuantity;
-                            console.log('الكمية الحالية:', product.quantity, 'الكمية الجديدة:', newQuantity);
+                        console.log('مقارنة:', item.name, 'مع', product.name);
+                        
+                        if (item.name === product.name) {
+                            console.log('وجدت تطابق!');
+                            console.log('الكمية الحالية:', product.quantity);
+                            console.log('الكمية المطلوبة:', item.quantity);
+                            
+                            const newQuantity = parseInt(product.quantity) + parseInt(item.quantity);
+                            console.log('الكمية الجديدة:', newQuantity);
 
+                            console.log('جاري تحديث المخزون...');
                             db.ref('products').child(productId).update({
                                 quantity: newQuantity,
                                 updatedAt: new Date().toISOString()
                             })
                             .then(() => {
                                 console.log('تم تحديث المخزون بنجاح');
-                                showToast(`تم إضافة ${totalQuantity} قطعة إلى ${product.name} - الكمية الجديدة: ${newQuantity}`);
+                                showToast(`تم إضافة ${item.quantity} قطعة إلى ${product.name} - الكمية الجديدة: ${newQuantity}`);
                             })
                             .catch(error => {
                                 console.error('خطأ في إعادة المخزون:', error);
